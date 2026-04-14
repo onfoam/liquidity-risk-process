@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+  <changeSet id="001-1" author="gh-lri">
+    <createTable tableName="lri_report">
+      <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true" nullable="false"/></column>
+      <column name="report_year" type="INT"><constraints nullable="false"/></column>
+      <column name="quarter_range" type="VARCHAR(10)"><constraints nullable="false"/></column>
+      <column name="version_number" type="INT" defaultValueNumeric="1"><constraints nullable="false"/></column>
+      <column name="lcr_qa" type="DOUBLE"/><column name="lcr_qb" type="DOUBLE"/><column name="lcr_coverage" type="DOUBLE"/>
+      <column name="nsfr_qa" type="DOUBLE"/><column name="nsfr_qb" type="DOUBLE"/><column name="nsfr_coverage" type="DOUBLE"/>
+      <column name="leverage_qa" type="DOUBLE"/><column name="leverage_qb" type="DOUBLE"/><column name="leverage_coverage" type="DOUBLE"/>
+      <column name="employee_comment" type="VARCHAR(255)"/>
+      <column name="manager_comment" type="VARCHAR(255)"/>
+      <column name="return_comment" type="VARCHAR(255)"/>
+      <column name="status" type="VARCHAR(20)"><constraints nullable="false"/></column>
+      <column name="process_instance_id" type="BIGINT"/>
+      <column name="created_by" type="VARCHAR(100)"><constraints nullable="false"/></column>
+      <column name="created_at" type="TIMESTAMP"><constraints nullable="false"/></column>
+      <column name="submitted_at" type="TIMESTAMP"/><column name="approved_at" type="TIMESTAMP"/>
+      <column name="approved_by" type="VARCHAR(100)"/>
+    </createTable>
+    <addUniqueConstraint tableName="lri_report" columnNames="report_year,quarter_range,version_number" constraintName="uq_lri_period_ver"/>
+    <createIndex tableName="lri_report" indexName="idx_lri_status"><column name="status"/></createIndex>
+    <createIndex tableName="lri_report" indexName="idx_lri_pid"><column name="process_instance_id"/></createIndex>
+    <rollback><dropTable tableName="lri_report"/></rollback>
+  </changeSet>
+  <changeSet id="001-2" author="gh-lri">
+    <createTable tableName="lri_audit_log">
+      <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true" nullable="false"/></column>
+      <column name="report_id" type="BIGINT"><constraints nullable="false"/></column>
+      <column name="action" type="VARCHAR(30)"><constraints nullable="false"/></column>
+      <column name="performed_by" type="VARCHAR(100)"><constraints nullable="false"/></column>
+      <column name="performed_at" type="TIMESTAMP"><constraints nullable="false"/></column>
+      <column name="comment" type="VARCHAR(500)"/>
+    </createTable>
+    <addForeignKeyConstraint baseTableName="lri_audit_log" baseColumnNames="report_id" referencedTableName="lri_report" referencedColumnNames="id" constraintName="fk_audit_report" onDelete="CASCADE"/>
+    <createIndex tableName="lri_audit_log" indexName="idx_audit_report"><column name="report_id"/></createIndex>
+    <rollback><dropTable tableName="lri_audit_log"/></rollback>
+  </changeSet>
+</databaseChangeLog>
