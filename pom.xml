@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.gh.awb</groupId>
+    <artifactId>liquidity-risk-indicators</artifactId>
+    <version>1.0.0</version>
+    <packaging>kjar</packaging>
+    <properties>
+        <java.version>11</java.version>
+        <jbpm.version>7.74.1.Final</jbpm.version>
+        <kie.version>7.74.1.Final</kie.version>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency><groupId>org.kie</groupId><artifactId>kie-bom</artifactId><version>${kie.version}</version><type>pom</type><scope>import</scope></dependency>
+        </dependencies>
+    </dependencyManagement>
+    <dependencies>
+        <dependency><groupId>org.jbpm</groupId><artifactId>jbpm-kie-services</artifactId><scope>provided</scope></dependency>
+        <dependency><groupId>org.kie</groupId><artifactId>kie-api</artifactId><scope>provided</scope></dependency>
+        <dependency><groupId>org.jbpm</groupId><artifactId>jbpm-persistence-jpa</artifactId><scope>provided</scope></dependency>
+        <dependency><groupId>javax.persistence</groupId><artifactId>javax.persistence-api</artifactId><version>2.2</version><scope>provided</scope></dependency>
+        <dependency><groupId>org.springframework.data</groupId><artifactId>spring-data-jpa</artifactId><version>2.7.18</version><scope>provided</scope></dependency>
+        <dependency><groupId>org.keycloak</groupId><artifactId>keycloak-admin-client</artifactId><version>21.1.2</version></dependency>
+        <dependency><groupId>org.postgresql</groupId><artifactId>postgresql</artifactId><version>42.7.1</version><scope>provided</scope></dependency>
+        <dependency><groupId>org.liquibase</groupId><artifactId>liquibase-core</artifactId><version>4.25.1</version></dependency>
+        <dependency><groupId>org.apache.poi</groupId><artifactId>poi-ooxml</artifactId><version>5.2.5</version></dependency>
+        <dependency><groupId>org.thymeleaf</groupId><artifactId>thymeleaf</artifactId><version>3.1.2.RELEASE</version></dependency>
+        <dependency><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId><version>1.7.36</version><scope>provided</scope></dependency>
+        <dependency><groupId>junit</groupId><artifactId>junit</artifactId><version>4.13.2</version><scope>test</scope></dependency>
+        <dependency><groupId>org.assertj</groupId><artifactId>assertj-core</artifactId><version>3.24.2</version><scope>test</scope></dependency>
+        <dependency><groupId>org.jbpm</groupId><artifactId>jbpm-test</artifactId><scope>test</scope></dependency>
+    </dependencies>
+    <build><plugins><plugin><groupId>org.kie</groupId><artifactId>kie-maven-plugin</artifactId><version>${kie.version}</version><extensions>true</extensions></plugin></plugins></build>
+</project>

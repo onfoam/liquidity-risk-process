@@ -1,0 +1,20 @@
+<!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+<div style="background:#1F4E79;padding:16px 24px;border-radius:8px 8px 0 0;">
+  <h2 style="color:#FFF;margin:0;font-size:16px;">Governance House | Al-Wahda Bank</h2>
+  <p style="color:#B5D4F4;margin:4px 0 0;font-size:12px;">Liquidity Risk Monitoring System</p>
+</div>
+<div style="background:#FFF;border:1px solid #E0E0E0;padding:24px;">
+  <h3 style="color:#1F4E79;margin:0 0 16px;">Report Approved</h3>
+  <p style="color:#333;line-height:1.6;" th:text="${bodyEn}">English body placeholder</p>
+  <a th:href="${actionUrl}" style="display:inline-block;background:#1F4E79;color:#FFF;padding:10px 24px;border-radius:6px;text-decoration:none;margin:16px 0;">Open in BPM System</a>
+</div>
+<div style="border-top:1px solid #E0E0E0;"></div>
+<div style="background:#FAFAFA;border:1px solid #E0E0E0;border-top:none;padding:24px;" dir="rtl">
+  <h3 style="color:#1F4E79;margin:0 0 16px;">Report Approved</h3>
+  <p style="color:#333;line-height:1.8;" th:text="${bodyAr}">Arabic body placeholder</p>
+  <a th:href="${actionUrl}" style="display:inline-block;background:#1F4E79;color:#FFF;padding:10px 24px;border-radius:6px;text-decoration:none;margin:16px 0;">فتح في النظام</a>
+</div>
+<div style="background:#F5F5F5;padding:12px 24px;border-radius:0 0 8px 8px;border:1px solid #E0E0E0;border-top:none;">
+  <p style="color:#999;font-size:11px;margin:0;">Automated message. Do not reply. | رسالة تلقائية. يرجى عدم الرد.</p>
+</div>
+</body></html>
