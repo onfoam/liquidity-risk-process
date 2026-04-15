@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.omg.org/bpmn20" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:bpsim="http://www.bpsim.org/schemas/1.0" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:drools="http://www.jboss.org/drools" id="_LRI_definitions" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd http://www.jboss.org/drools drools.xsd http://www.bpsim.org/schemas/1.0 bpsim.xsd" exporter="jBPM Process Modeler" exporterVersion="1.0" targetNamespace="http://www.omg.org/bpmn20">
+
+  <!-- Item Definitions -->
+  <bpmn2:itemDefinition id="_selectedYearItem" structureRef="Integer"/>
+  <bpmn2:itemDefinition id="_selectedQuarterRangeItem" structureRef="String"/>
+  <bpmn2:itemDefinition id="_makerActionItem" structureRef="String"/>
+  <bpmn2:itemDefinition id="_managerActionItem" structureRef="String"/>
+  <bpmn2:itemDefinition id="_dataAvailableItem" structureRef="Boolean"/>
+  <bpmn2:itemDefinition id="_employeeCommentItem" structureRef="String"/>
+  <bpmn2:itemDefinition id="_managerCommentItem" structureRef="String"/>
+  <bpmn2:itemDefinition id="_returnCommentItem" structureRef="String"/>
+  <bpmn2:itemDefinition id="_reportStatusItem" structureRef="String"/>
+  <bpmn2:itemDefinition id="_isReturnedItem" structureRef="Boolean"/>
+  <bpmn2:itemDefinition id="_lcrQAItem" structureRef="Float"/>
+  <bpmn2:itemDefinition id="_lcrQBItem" structureRef="Float"/>
+  <bpmn2:itemDefinition id="_lcrCoverageItem" structureRef="Float"/>
+  <bpmn2:itemDefinition id="_nsfrQAItem" structureRef="Float"/>
+  <bpmn2:itemDefinition id="_nsfrQBItem" structureRef="Float"/>
+  <bpmn2:itemDefinition id="_nsfrCoverageItem" structureRef="Float"/>
+  <bpmn2:itemDefinition id="_leverageQAItem" structureRef="Float"/>
+  <bpmn2:itemDefinition id="_leverageQBItem" structureRef="Float"/>
+  <bpmn2:itemDefinition id="_leverageCoverageItem" structureRef="Float"/>
+
+  <bpmn2:process id="com.gh.awb.lri.LiquidityRiskIndicators" drools:packageName="com.gh.awb.lri" drools:version="1.0" name="Liquidity Risk Indicators" isExecutable="true">
+
+    <!-- Process Variables -->
+    <bpmn2:property id="selectedYear" itemSubjectRef="_selectedYearItem"/>
+    <bpmn2:property id="selectedQuarterRange" itemSubjectRef="_selectedQuarterRangeItem"/>
+    <bpmn2:property id="makerAction" itemSubjectRef="_makerActionItem"/>
+    <bpmn2:property id="managerAction" itemSubjectRef="_managerActionItem"/>
+    <bpmn2:property id="dataAvailable" itemSubjectRef="_dataAvailableItem"/>
+    <bpmn2:property id="employeeComment" itemSubjectRef="_employeeCommentItem"/>
+    <bpmn2:property id="managerComment" itemSubjectRef="_managerCommentItem"/>
+    <bpmn2:property id="returnComment" itemSubjectRef="_returnCommentItem"/>
+    <bpmn2:property id="reportStatus" itemSubjectRef="_reportStatusItem"/>
+    <bpmn2:property id="isReturned" itemSubjectRef="_isReturnedItem"/>
+    <bpmn2:property id="lcrQA" itemSubjectRef="_lcrQAItem"/>
+    <bpmn2:property id="lcrQB" itemSubjectRef="_lcrQBItem"/>
+    <bpmn2:property id="lcrCoverage" itemSubjectRef="_lcrCoverageItem"/>
+    <bpmn2:property id="nsfrQA" itemSubjectRef="_nsfrQAItem"/>
+    <bpmn2:property id="nsfrQB" itemSubjectRef="_nsfrQBItem"/>
+    <bpmn2:property id="nsfrCoverage" itemSubjectRef="_nsfrCoverageItem"/>
+    <bpmn2:property id="leverageQA" itemSubjectRef="_leverageQAItem"/>
+    <bpmn2:property id="leverageQB" itemSubjectRef="_leverageQBItem"/>
+    <bpmn2:property id="leverageCoverage" itemSubjectRef="_leverageCoverageItem"/>
+
+    <!-- START -->
+    <bpmn2:startEvent id="_start" name="Start">
+      <bpmn2:outgoing>_sf_start_ht01</bpmn2:outgoing>
+    </bpmn2:startEvent>
+
+    <!-- HT-01: Select Period -->
+    <bpmn2:userTask id="_ht01" name="Select Reporting Period">
+      <bpmn2:incoming>_sf_start_ht01</bpmn2:incoming>
+      <bpmn2:outgoing>_sf_ht01_st01</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="_ht01_po">
+        <bpmn2:resourceAssignmentExpression>
+          <bpmn2:formalExpression>lri-maker</bpmn2:formalExpression>
+        </bpmn2:resourceAssignmentExpression>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+
+    <!-- ST-01: Validate Data (custom work item) -->
+    <bpmn2:task id="_st01" name="Validate Data" drools:taskName="DataValidation">
+      <bpmn2:incoming>_sf_ht01_st01</bpmn2:incoming>
+      <bpmn2:outgoing>_sf_st01_gw01</bpmn2:outgoing>
+    </bpmn2:task>
+
+    <!-- GW-01: Data Available? -->
+    <bpmn2:exclusiveGateway id="_gw01" drools:dg="" name="Data Available" gatewayDirection="Diverging" default="_sf_gw01_err">
+      <bpmn2:incoming>_sf_st01_gw01</bpmn2:incoming>
+      <bpmn2:outgoing>_sf_gw01_st02</bpmn2:outgoing>
+      <bpmn2:outgoing>_sf_gw01_err</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+
+    <!-- ST-02: Calculate -->
+    <bpmn2:task id="_st02" name="Calculate Indicators" drools:taskName="CalculateIndicators">
+      <bpmn2:incoming>_sf_gw01_st02</bpmn2:incoming>
+      <bpmn2:outgoing>_sf_st02_ht02</bpmn2:outgoing>
+    </bpmn2:task>
+
+    <!-- HT-02: Review & Comment -->
+    <bpmn2:userTask id="_ht02" name="Review Indicators">
+      <bpmn2:incoming>_sf_st02_ht02</bpmn2:incoming>
+      <bpmn2:incoming>_sf_gw02_ht02</bpmn2:incoming>
+      <bpmn2:incoming>_sf_gw03_ht02</bpmn2:incoming>
+      <bpmn2:outgoing>_sf_ht02_gw02</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="_ht02_po">
+        <bpmn2:resourceAssignmentExpression>
+          <bpmn2:formalExpression>lri-maker</bpmn2:formalExpression>
+        </bpmn2:resourceAssignmentExpression>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+
+    <!-- GW-02: Maker Action -->
+    <bpmn2:exclusiveGateway id="_gw02" drools:dg="" name="Maker Action" gatewayDirection="Diverging" default="_sf_gw02_ht02">
+      <bpmn2:incoming>_sf_ht02_gw02</bpmn2:incoming>
+      <bpmn2:outgoing>_sf_gw02_ht03</bpmn2:outgoing>
+      <bpmn2:outgoing>_sf_gw02_ht02</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+
+    <!-- HT-03: Manager Review -->
+    <bpmn2:userTask id="_ht03" name="Manager Review">
+      <bpmn2:incoming>_sf_gw02_ht03</bpmn2:incoming>
+      <bpmn2:outgoing>_sf_ht03_gw03</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="_ht03_po">
+        <bpmn2:resourceAssignmentExpression>
+          <bpmn2:formalExpression>lri-checker</bpmn2:formalExpression>
+        </bpmn2:resourceAssignmentExpression>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+
+    <!-- GW-03: Manager Decision -->
+    <bpmn2:exclusiveGateway id="_gw03" drools:dg="" name="Manager Decision" gatewayDirection="Diverging" default="_sf_gw03_ht02">
+      <bpmn2:incoming>_sf_ht03_gw03</bpmn2:incoming>
+      <bpmn2:outgoing>_sf_gw03_ht04</bpmn2:outgoing>
+      <bpmn2:outgoing>_sf_gw03_ht02</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+
+    <!-- HT-04: Director Approval -->
+    <bpmn2:userTask id="_ht04" name="Director Approval">
+      <bpmn2:incoming>_sf_gw03_ht04</bpmn2:incoming>
+      <bpmn2:outgoing>_sf_ht04_st04</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="_ht04_po">
+        <bpmn2:resourceAssignmentExpression>
+          <bpmn2:formalExpression>lri-approver</bpmn2:formalExpression>
+        </bpmn2:resourceAssignmentExpression>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+
+    <!-- ST-04: Archive -->
+    <bpmn2:task id="_st04" name="Archive Report" drools:taskName="ArchiveReport">
+      <bpmn2:incoming>_sf_ht04_st04</bpmn2:incoming>
+      <bpmn2:outgoing>_sf_st04_end</bpmn2:outgoing>
+    </bpmn2:task>
+
+    <!-- END -->
+    <bpmn2:endEvent id="_end" name="Complete">
+      <bpmn2:incoming>_sf_st04_end</bpmn2:incoming>
+    </bpmn2:endEvent>
+
+    <!-- Error End -->
+    <bpmn2:endEvent id="_errEnd" name="No Data">
+      <bpmn2:incoming>_sf_gw01_err</bpmn2:incoming>
+    </bpmn2:endEvent>
+
+    <!-- Sequence Flows -->
+    <bpmn2:sequenceFlow id="_sf_start_ht01" sourceRef="_start" targetRef="_ht01"/>
+    <bpmn2:sequenceFlow id="_sf_ht01_st01" sourceRef="_ht01" targetRef="_st01"/>
+    <bpmn2:sequenceFlow id="_sf_st01_gw01" sourceRef="_st01" targetRef="_gw01"/>
+    <bpmn2:sequenceFlow id="_sf_gw01_st02" sourceRef="_gw01" targetRef="_st02">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" language="http://www.java.com/java"><![CDATA[return dataAvailable == true;]]></bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="_sf_gw01_err" sourceRef="_gw01" targetRef="_errEnd"/>
+    <bpmn2:sequenceFlow id="_sf_st02_ht02" sourceRef="_st02" targetRef="_ht02"/>
+    <bpmn2:sequenceFlow id="_sf_ht02_gw02" sourceRef="_ht02" targetRef="_gw02"/>
+    <bpmn2:sequenceFlow id="_sf_gw02_ht03" sourceRef="_gw02" targetRef="_ht03">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" language="http://www.java.com/java"><![CDATA[return "submit".equals(makerAction);]]></bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="_sf_gw02_ht02" sourceRef="_gw02" targetRef="_ht02"/>
+    <bpmn2:sequenceFlow id="_sf_ht03_gw03" sourceRef="_ht03" targetRef="_gw03"/>
+    <bpmn2:sequenceFlow id="_sf_gw03_ht04" sourceRef="_gw03" targetRef="_ht04">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" language="http://www.java.com/java"><![CDATA[return "submit".equals(managerAction);]]></bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="_sf_gw03_ht02" sourceRef="_gw03" targetRef="_ht02">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" language="http://www.java.com/java"><![CDATA[return "return".equals(managerAction);]]></bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="_sf_ht04_st04" sourceRef="_ht04" targetRef="_st04"/>
+    <bpmn2:sequenceFlow id="_sf_st04_end" sourceRef="_st04" targetRef="_end"/>
+
+  </bpmn2:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="com.gh.awb.lri.LiquidityRiskIndicators">
+      <bpmndi:BPMNShape id="_start_di" bpmnElement="_start"><dc:Bounds x="60" y="240" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_ht01_di" bpmnElement="_ht01"><dc:Bounds x="160" y="218" width="140" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_st01_di" bpmnElement="_st01"><dc:Bounds x="370" y="218" width="140" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_gw01_di" bpmnElement="_gw01" isMarkerVisible="true"><dc:Bounds x="580" y="233" width="50" height="50"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_st02_di" bpmnElement="_st02"><dc:Bounds x="700" y="218" width="140" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_ht02_di" bpmnElement="_ht02"><dc:Bounds x="910" y="218" width="140" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_gw02_di" bpmnElement="_gw02" isMarkerVisible="true"><dc:Bounds x="1120" y="233" width="50" height="50"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_ht03_di" bpmnElement="_ht03"><dc:Bounds x="1240" y="218" width="140" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_gw03_di" bpmnElement="_gw03" isMarkerVisible="true"><dc:Bounds x="1450" y="233" width="50" height="50"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_ht04_di" bpmnElement="_ht04"><dc:Bounds x="1570" y="218" width="140" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_st04_di" bpmnElement="_st04"><dc:Bounds x="1780" y="218" width="140" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_end_di" bpmnElement="_end"><dc:Bounds x="1990" y="240" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_errEnd_di" bpmnElement="_errEnd"><dc:Bounds x="587" y="370" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="_sf_start_ht01_di" bpmnElement="_sf_start_ht01"><di:waypoint x="96" y="258"/><di:waypoint x="160" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_sf_ht01_st01_di" bpmnElement="_sf_ht01_st01"><di:waypoint x="300" y="258"/><di:waypoint x="370" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_sf_st01_gw01_di" bpmnElement="_sf_st01_gw01"><di:waypoint x="510" y="258"/><di:waypoint x="580" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_sf_gw01_st02_di" bpmnElement="_sf_gw01_st02"><di:waypoint x="630" y="258"/><di:waypoint x="700" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_sf_gw01_err_di" bpmnElement="_sf_gw01_err"><di:waypoint x="605" y="283"/><di:waypoint x="605" y="370"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_sf_st02_ht02_di" bpmnElement="_sf_st02_ht02"><di:waypoint x="840" y="258"/><di:waypoint x="910" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_sf_ht02_gw02_di" bpmnElement="_sf_ht02_gw02"><di:waypoint x="1050" y="258"/><di:waypoint x="1120" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_sf_gw02_ht03_di" bpmnElement="_sf_gw02_ht03"><di:waypoint x="1170" y="258"/><di:waypoint x="1240" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_sf_gw02_ht02_di" bpmnElement="_sf_gw02_ht02"><di:waypoint x="1145" y="233"/><di:waypoint x="1145" y="160"/><di:waypoint x="980" y="160"/><di:waypoint x="980" y="218"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_sf_ht03_gw03_di" bpmnElement="_sf_ht03_gw03"><di:waypoint x="1380" y="258"/><di:waypoint x="1450" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_sf_gw03_ht04_di" bpmnElement="_sf_gw03_ht04"><di:waypoint x="1500" y="258"/><di:waypoint x="1570" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_sf_gw03_ht02_di" bpmnElement="_sf_gw03_ht02"><di:waypoint x="1475" y="233"/><di:waypoint x="1475" y="100"/><di:waypoint x="980" y="100"/><di:waypoint x="980" y="218"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_sf_ht04_st04_di" bpmnElement="_sf_ht04_st04"><di:waypoint x="1710" y="258"/><di:waypoint x="1780" y="258"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="_sf_st04_end_di" bpmnElement="_sf_st04_end"><di:waypoint x="1920" y="258"/><di:waypoint x="1990" y="258"/></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
