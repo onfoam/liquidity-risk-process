@@ -1,0 +1,92 @@
+[
+  [
+    "name" : "DataValidation",
+    "displayName" : "Validate Data Availability",
+    "category" : "LRI-Services",
+    "description" : "Validates monthly data exists in SRS Phase 1 DB",
+    "defaultHandler" : "mvel: new com.gh.awb.lri.handler.DataValidationHandler(runtimeManager)",
+    "parameters" : [
+      "selectedYear" : new IntegerDataType(),
+      "selectedQuarterRange" : new StringDataType()
+    ],
+    "results" : [
+      "dataAvailable" : new BooleanDataType(),
+      "monthlyData" : new ObjectDataType()
+    ],
+    "icon" : "defaultservicenodeicon.png"
+  ],
+
+  [
+    "name" : "CalculateIndicators",
+    "displayName" : "Calculate Quarterly Indicators",
+    "category" : "LRI-Services",
+    "description" : "Calculates quarterly values for LCR, NSFR, Leverage Ratio",
+    "defaultHandler" : "mvel: new com.gh.awb.lri.handler.CalculationHandler(runtimeManager)",
+    "parameters" : [
+      "monthlyData" : new ObjectDataType(),
+      "selectedQuarterRange" : new StringDataType()
+    ],
+    "results" : [
+      "lcrQA" : new FloatDataType(),
+      "lcrQB" : new FloatDataType(),
+      "lcrCoverage" : new FloatDataType(),
+      "nsfrQA" : new FloatDataType(),
+      "nsfrQB" : new FloatDataType(),
+      "nsfrCoverage" : new FloatDataType(),
+      "leverageQA" : new FloatDataType(),
+      "leverageQB" : new FloatDataType(),
+      "leverageCoverage" : new FloatDataType(),
+      "calcWarnings" : new ObjectDataType()
+    ],
+    "icon" : "defaultservicenodeicon.png"
+  ],
+
+  [
+    "name" : "ArchiveReport",
+    "displayName" : "Archive Final Report",
+    "category" : "LRI-Services",
+    "description" : "Archives approved report to database",
+    "defaultHandler" : "mvel: new com.gh.awb.lri.handler.ArchiveReportHandler(runtimeManager)",
+    "parameters" : [
+      "reportEntityId" : new IntegerDataType(),
+      "approvedBy" : new StringDataType()
+    ],
+    "results" : [
+      "reportStatus" : new StringDataType()
+    ],
+    "icon" : "defaultservicenodeicon.png"
+  ],
+
+  [
+    "name" : "GenerateReport",
+    "displayName" : "Generate Report File",
+    "category" : "LRI-Services",
+    "description" : "Generates Excel/PDF report from indicator data",
+    "defaultHandler" : "mvel: new com.gh.awb.lri.handler.ReportGenerationHandler(runtimeManager)",
+    "parameters" : [
+      "reportEntityId" : new IntegerDataType()
+    ],
+    "results" : [
+      "reportBytes" : new ObjectDataType(),
+      "reportFileName" : new StringDataType()
+    ],
+    "icon" : "defaultservicenodeicon.png"
+  ],
+
+  [
+    "name" : "SendNotification",
+    "displayName" : "Send Notification",
+    "category" : "LRI-Services",
+    "description" : "Sends email and in-app notifications",
+    "defaultHandler" : "mvel: new com.gh.awb.lri.handler.NotificationHandler(runtimeManager)",
+    "parameters" : [
+      "templateId" : new StringDataType(),
+      "recipientEmails" : new ObjectDataType(),
+      "subject" : new StringDataType()
+    ],
+    "results" : [
+      "notificationSent" : new BooleanDataType()
+    ],
+    "icon" : "defaultservicenodeicon.png"
+  ]
+]
