@@ -1,0 +1,54 @@
+[
+  [
+    "name" : "ValidateData",
+    "displayName" : "Validate Data Availability",
+    "category" : "LRI-Services",
+    "defaultHandler" : "mvel: new com.gh.awb.handler.ValidateDataHandler(runtimeManager)",
+    "parameters" : [
+      "selectedYear" : new StringDataType(),
+      "selectedQuarterRange" : new StringDataType()
+    ],
+    "results" : [
+      "dataAvailable" : new BooleanDataType()
+    ],
+    "icon" : "defaultservicenodeicon.png"
+  ],
+  [
+    "name" : "CalculateIndicators",
+    "displayName" : "Calculate Liquidity Indicators",
+    "category" : "LRI-Services",
+    "defaultHandler" : "mvel: new com.gh.awb.handler.CalculateIndicatorsHandler(runtimeManager)",
+    "parameters" : [
+      "selectedYear" : new StringDataType(),
+      "selectedQuarterRange" : new StringDataType()
+    ],
+    "results" : [
+      "lcrQ1" : new FloatDataType(),
+      "lcrQ2" : new FloatDataType(),
+      "lcrCoverage" : new FloatDataType(),
+      "nsfrQ1" : new FloatDataType(),
+      "nsfrQ2" : new FloatDataType(),
+      "nsfrCoverage" : new FloatDataType(),
+      "leverageQ1" : new FloatDataType(),
+      "leverageQ2" : new FloatDataType(),
+      "leverageCoverage" : new FloatDataType()
+    ],
+    "icon" : "defaultservicenodeicon.png"
+  ],
+  [
+    "name" : "ArchiveReport",
+    "displayName" : "Archive Final Report",
+    "category" : "LRI-Services",
+    "defaultHandler" : "mvel: new com.gh.awb.handler.ArchiveReportHandler(runtimeManager)",
+    "parameters" : [
+      "selectedYear" : new StringDataType(),
+      "selectedQuarterRange" : new StringDataType(),
+      "makerComment" : new StringDataType(),
+      "checkerComment" : new StringDataType()
+    ],
+    "results" : [
+      "reportStatus" : new StringDataType()
+    ],
+    "icon" : "defaultservicenodeicon.png"
+  ]
+]
